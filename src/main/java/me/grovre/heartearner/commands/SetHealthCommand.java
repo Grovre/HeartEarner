@@ -28,9 +28,9 @@ public class SetHealthCommand implements TabExecutor {
 
         if(args.length != 3) {
             if(sender != null) {
-                sender.sendMessage(ChatColor.RED + "You need to use the command like /health set player 10");
+                sender.sendMessage(ChatColor.RED + "You need to use the command like /heartearner set player 10");
             }
-            System.out.println("You need to use the command like /health set player 10");
+            System.out.println("You need to use the command like /heartearner set player 10");
             return true;
         }
 
