@@ -1,0 +1,1 @@
+startingHealth: 2 # The amount of health every player will join the server with for the first time. After that, uses the database

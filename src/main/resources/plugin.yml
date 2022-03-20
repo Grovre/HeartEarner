@@ -1,0 +1,10 @@
+name: HeartEarner
+version: '${project.version}'
+main: me.grovre.heartearner.HeartEarner
+api-version: 1.18
+authors: [ PoptartFromPluto ]
+description: Change the amount of health someone has with a simple command
+website: https://github.com/grovre
+commands:
+  heartearner:
+    usage: /heartearner <action> <player> <amount>
