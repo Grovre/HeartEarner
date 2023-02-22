@@ -1,7 +1,11 @@
 package me.grovre.heartearner;
 
-import me.grovre.heartearner.commands.CommandAutoCompleteMap;
-import me.grovre.heartearner.commands.SetHealthCommand;
+import me.grovre.heartearner.listeners.OnPlayerJoin;
+import org.bukkit.attribute.Attributable;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -9,6 +13,9 @@ import java.util.Objects;
 public final class HeartEarner extends JavaPlugin {
 
     public static HeartEarner plugin;
+    public static double StartingHearts;
+    public static boolean AllowPurchasingHearts;
+    public static int PurchaseCost;
 
     public static HeartEarner getPlugin() {
         return plugin;
@@ -19,16 +26,40 @@ public final class HeartEarner extends JavaPlugin {
         // Plugin startup logic
         plugin = this;
         this.saveDefaultConfig();
-        dbUtil.loadData();
-        CommandAutoCompleteMap.loadTabCompletion();
+        StartingHearts = this.getConfig().getDouble("startingHealth");
+        AllowPurchasingHearts = this.getConfig().getBoolean("allowHealthPurchaseWithXp");
+        PurchaseCost = this.getConfig().getInt("experienceCost");
 
-        Objects.requireNonNull(getServer().getPluginCommand("heartearner")).setExecutor(new SetHealthCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("heartearner")).setTabCompleter(new SetHealthCommand());
+        getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        dbUtil.saveData();
+
+    }
+
+    public static void ChangeHeartsClampHealth(Attributable attributableEntity, double newHeartCount) {
+        double health;
+        if (attributableEntity instanceof LivingEntity livingEntity) {
+            health = livingEntity.getHealth();
+        } else {
+            System.err.println("Attributable is not a LivingEntity, cannot change hearts");
+            return;
+        }
+
+        var maxHealthAttribute = attributableEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (maxHealthAttribute == null) {
+            System.err.println("Tried changing the max health of an entity without max health attribute");
+            return;
+        }
+
+        if (health == maxHealthAttribute.getValue()) {
+            livingEntity.setHealth(health);
+        }
+
+        maxHealthAttribute.setBaseValue(newHeartCount);
+        if (attributableEntity instanceof Player p)
+            System.out.println("Setting max health of " + p.getName() + " to " + newHeartCount);
     }
 }

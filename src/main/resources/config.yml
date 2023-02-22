@@ -1,1 +1,3 @@
-startingHealth: 2 # The amount of health every player will join the server with for the first time. After that, uses the database
+startingHealth: 30 # The amount of health every player will join the server with for the first time. Vanilla health is 20, 2 per heart
+allowHealthPurchaseWithXp: true # If players are allowed to gain their health with purchases from experience
+experienceCost: 3965 # How much XP it costs to purchase if purchasing is allowed. Use this website with starting level set to 0: https://crumbskull.com/MinecraftXPCalculator/
