@@ -54,12 +54,10 @@ public final class HeartEarner extends JavaPlugin {
             return;
         }
 
-        if (health == maxHealthAttribute.getValue()) {
-            livingEntity.setHealth(health);
-        }
-
         maxHealthAttribute.setBaseValue(newHeartCount);
         if (attributableEntity instanceof Player p)
             System.out.println("Setting max health of " + p.getName() + " to " + newHeartCount);
+        if (newHeartCount < health)
+            livingEntity.setHealth(newHeartCount - 0.1);
     }
 }
