@@ -1,5 +1,6 @@
 package me.grovre.heartearner;
 
+import me.grovre.heartearner.commands.SetHeartsCommand;
 import me.grovre.heartearner.listeners.OnPlayerJoin;
 import org.bukkit.attribute.Attributable;
 import org.bukkit.attribute.Attribute;
@@ -31,6 +32,9 @@ public final class HeartEarner extends JavaPlugin {
         PurchaseCost = this.getConfig().getInt("experienceCost");
 
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
+        var completerAndExecutor = new SetHeartsCommand();
+        getCommand("heartearner").setExecutor(completerAndExecutor);
+        getCommand("heartearner").setTabCompleter(completerAndExecutor);
     }
 
     @Override
@@ -61,3 +65,11 @@ public final class HeartEarner extends JavaPlugin {
             livingEntity.setHealth(newHeartCount - 0.1);
     }
 }
+
+/* Perms:
+heartearner.
+get
+set
+add
+remove
+ */
